@@ -1,0 +1,19 @@
+<nav>
+    <a href="{% url 'bank_app:enable_2fa' %}">2-Factor Authentication</a>&nbsp;&nbsp;|&nbsp;
+    <a href="{% url 'bank_app:customer_dashboard' %}">Accounts</a>&nbsp;&nbsp;|&nbsp;
+    <a href="{% url 'bank_app:make_transfer' %}">Make transfer</a>&nbsp;&nbsp;|&nbsp;
+    <a href="{% url 'bank_app:make_external_transfer' %}">Make External Transfer</a>&nbsp;&nbsp;|&nbsp;
+    <a href="{% url 'bank_app:recurring_payments' %}">Recurring Payments</a>&nbsp;&nbsp;|&nbsp;
+    <a href="{% url 'bank_app:stocks' %}">Stocks</a>&nbsp;&nbsp;|&nbsp;
+    {% if user.customer.rank != "BASIC" %}
+        <a href="{% url 'bank_app:loans' %}">Loans</a>&nbsp;&nbsp;|&nbsp;
+    {% endif %}
+    <a href="{% url 'bank_app:external_transfers_overview' %}">External transfers</a>&nbsp;&nbsp;|&nbsp;
+    <a href="{% url 'bank_app:notifications' %}" id="notifications_tab">
+        Notifications
+        {% if user.customer.unread_notifications_count > 0 %}
+        <font color="red" >({{ user.customer.unread_notifications_count }})</font>
+        {% endif %}
+    </a>&nbsp;&nbsp;|&nbsp;
+</nav>
+<hr>

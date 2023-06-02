@@ -1,0 +1,86 @@
+{% extends "bank_app/base.html" %}
+
+{% load humanize %}
+
+{% block title %}Account details - {{ account.name }}{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if is_employee %}
+        {% include 'bank_app/employee_dashboard_nav.html' %}
+    {% else %}
+        {% include 'bank_app/customer_dashboard_nav.html' %}
+    {% endif %}
+{% endif %}
+    <article>
+        {% if not account.is_loan %}
+            <h2>Account Details</h2>
+        {% else %}
+            <h2>Loan Details</h2>
+        {% endif %}
+        <table>
+            <thead>
+                <tr>
+                    {% if not account.is_loan %}
+                    <th>Account Number</th>
+                    <th>Account Name</th>
+                    {% else %}
+                        <th>Loan Number</th>
+                        <th>Loan Name</th>
+                    {% endif %}
+                    <th>Balance</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ account.pk}} </td>
+                    <td>{{ account.name }}</td>
+                    <td>{{ account.available_balance|intcomma }}</td>
+                    <td>{{ account.created_at|date:'Y-n-d' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% if not account.is_loan %}
+            <p><a href="{% url 'bank_app:index' %}">Back</a></p>
+        {% else %}
+            <p><a href="{% url 'bank_app:loans' %}">Back</a></p>
+        {% endif %}
+    </article>
+
+    <article>
+        {% if not account.is_loan %}
+            <h2>Account Transactions</h2>
+        {% else %}
+            <h2>Loan Transactions</h2>
+        {% endif %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Amount</th>
+                    <th>Text</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in account.movements %}
+                    <tr>
+                        <td><a 
+                            hx-trigger="click"
+                            hx-get="{% url 'bank_app:transaction_details' m.transaction_id %}"
+                            hx-target="#transaction_details"
+                            style="display: block;"
+                            href=""
+                            >{{ m.pk }}
+                        </a></td>
+                        <td>{{ m.amount|intcomma }}</td>
+                        <td>{{ m.text }}</td>
+                        <td>{{ m.created_at|date:'Y-n-d H:i' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+    <article id="transaction_details"></article>
+{% endblock %}

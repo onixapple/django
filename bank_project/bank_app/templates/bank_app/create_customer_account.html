@@ -1,0 +1,18 @@
+{% extends "bank_app/base.html" %}
+
+{% block content %}
+
+{% include 'bank_app/employee_dashboard_nav.html' %}
+
+   <h1>Create Customer Account</h1>
+   <hr />
+   <form action="{% url 'bank_app:create_customer_account' customer_username %}" method="POST">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Account Name">
+      <button>Create</button>
+   </form>
+   <hr />
+   {% if error %}
+      {{ error }}
+   {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - name: Create and activate venv
+    init: | 
+      pyenv install 3.9.13
+      python -m venv /workspace/venv/django-env --upgrade-deps
+    command: |
+      source /workspace/venv/django-env/bin/activate
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      cd bank_project/
+
+ports:
+  - port: 8000
+    visibility: private
+
+vscode:
+  extensions:
+    - "ms-python.python"

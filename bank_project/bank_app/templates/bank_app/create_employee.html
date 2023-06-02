@@ -1,0 +1,20 @@
+{% extends "bank_app/base.html" %}
+
+{% block content %}
+   <h1>Create Employee Profile</h1>
+   <hr />
+   <form action="{% url 'bank_app:create_employee' %}" method="POST">
+      {% csrf_token %}
+      <input type="text" name="user_name" placeholder="User Name">
+      <input type="text" name="first_name" placeholder="First Name">
+      <input type="text" name="last_name" placeholder="Last Name">
+      <input type="email" name="email" placeholder="Email Address">
+      <input type="password" name="password" placeholder="Password">
+      <input type="password" name="confirm_password" placeholder="Confirm Password">
+      <button>Create</button>
+   </form>
+   <hr />
+   {% if error %}
+      {{ error }}
+   {% endif %}
+{% endblock %}
